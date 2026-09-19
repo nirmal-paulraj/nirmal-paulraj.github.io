@@ -471,7 +471,7 @@ section .title::after {
 }
 
 .about .title::after {
-    content: "who am I";
+    content: "who I am";
     background: var(--dark-nebula);
     color: var(--purple);
 }
