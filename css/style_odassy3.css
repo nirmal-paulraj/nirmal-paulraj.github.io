@@ -131,15 +131,144 @@ section {
     opacity: 1;
 }
 
+/* ============================================================
+   Accretion Disk Preloader & Progress Meter
+   ============================================================ */
 #preloader {
-    background: #33374f url("../images/planet.gif") no-repeat center center;
-    background-size: 43%;
-    width: 100%;
-    height: 130%;
     position: fixed;
-    z-index: 1000;
-    background-position-x: center;
-    background-position-y: 33%;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000008; /* Matches --dark-base */
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.7s ease;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#preloader.loaded {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 260px;
+}
+
+/* Graphic Container */
+.loader-visual {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+/* Event Horizon Core */
+.black-hole-core {
+    width: 48px;
+    height: 48px;
+    background: #000000;
+    border-radius: 50%;
+    box-shadow: 0 0 20px 4px rgba(106, 88, 180, 0.65), 0 0 45px rgba(106, 88, 180, 0.35);
+    z-index: 3;
+}
+
+/* Inner Accretion Plasma Ring */
+.accretion-ring {
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: #a088ff;
+    border-right-color: #6a58b4;
+    filter: drop-shadow(0 0 10px rgba(160, 136, 255, 0.8));
+    animation: accretionSpin 1.1s linear infinite;
+    z-index: 2;
+}
+
+/* Outer Orbital Stream */
+.orbit-halo {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid transparent;
+    border-bottom-color: rgba(160, 136, 255, 0.45);
+    border-left-color: rgba(106, 88, 180, 0.7);
+    animation: accretionSpin 2.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite reverse;
+    z-index: 1;
+}
+
+/* Fast Photon Particle */
+.orbit-halo::before {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 18px;
+    width: 4.5px;
+    height: 4.5px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #ffffff, 0 0 14px #a088ff;
+}
+
+/* Status Text & Numbers */
+.loader-telemetry {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
+    font-family: 'Ubuntu', sans-serif;
+    letter-spacing: 1.5px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.status-msg {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 10.5px;
+}
+
+.status-pct {
+    color: #a088ff;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Track Bar */
+.loader-track {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Filling Progress */
+.loader-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #4a3890, #6a58b4 60%, #a088ff);
+    box-shadow: 0 0 10px rgba(160, 136, 255, 0.85);
+    transition: width 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-radius: 6px;
+}
+
+@keyframes accretionSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .overlap {
