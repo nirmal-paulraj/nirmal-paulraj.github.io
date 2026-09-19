@@ -40,7 +40,7 @@
     
             <!-- Telemetry / Status -->
             <div class="loader-telemetry">
-                <span class="status-msg" id="loader-status">INITIALIZING SYSTEM</span>
+                <span class="status-msg" id="loader-status">APPROACHING SINGULARITY</span>
                 <span class="status-pct" id="loader-percent">0%</span>
             </div>
     
@@ -397,10 +397,10 @@
             var targetProgress = 15; // Initial parse baseline
         
             var stages = [
-                { progress: 30, text: "PARSING ASSETS" },
-                { progress: 65, text: "ENGAGING CANVASES" },
-                { progress: 85, text: "STABILIZING ORBIT" },
-                { progress: 100, text: "WARP READY" }
+                { progress: 30, text: "MAPPING ERGOSPHERE" },
+                { progress: 65, text: "COMPENSATING TIME DILATION" },
+                { progress: 88, text: "CROSSING EVENT HORIZON" },
+                { progress: 100, text: "SINGULARITY REACHED" }
             ];
         
             // Smooth ticker advancing visual bar towards target
@@ -459,7 +459,7 @@
             // Safety fallback: prevents preloader getting stuck if an asset stalls
             setTimeout(function () {
                 if (!loader.classList.contains("loaded")) {
-                    updateTarget(100, "INITIALIZING");
+                    updateTarget(100, "SINGULARITY REACHED");
                     setTimeout(function () {
                         clearInterval(ticker);
                         loader.classList.add("loaded");
