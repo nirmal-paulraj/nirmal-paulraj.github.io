@@ -28,7 +28,28 @@
 </head>
 
 <body>
-    <div id="preloader"></div>
+    <!-- Professional Accretion Disk Preloader -->
+    <div id="preloader" role="status" aria-live="polite">
+        <div class="loader-content">
+            <!-- Cosmic Core Graphic -->
+            <div class="loader-visual">
+                <div class="orbit-halo"></div>
+                <div class="accretion-ring"></div>
+                <div class="black-hole-core"></div>
+            </div>
+    
+            <!-- Telemetry / Status -->
+            <div class="loader-telemetry">
+                <span class="status-msg" id="loader-status">INITIALIZING SYSTEM</span>
+                <span class="status-pct" id="loader-percent">0%</span>
+            </div>
+    
+            <!-- Precision Progress Bar -->
+            <div class="loader-track">
+                <div class="loader-fill" id="loader-fill"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- global space atmosphere — nebula, constellations, shooting stars -->
     <canvas id="space-canvas" aria-hidden="true"></canvas>
@@ -361,10 +382,92 @@
     <!------------------------------------- Javascript ------------------------------------------>
     <script>
         //////////////// Preloader hide /////////////////////
-        var loader = document.getElementById("preloader");
-        window.addEventListener("load", function () {
-            loader.style.display = "none";
-        })
+        /* ============================================================
+   Accretion Preloader Tracker with Real Stage Transitions
+   ============================================================ */
+        (function () {
+            var loader = document.getElementById("preloader");
+            var fill = document.getElementById("loader-fill");
+            var percent = document.getElementById("loader-percent");
+            var status = document.getElementById("loader-status");
+        
+            if (!loader || !fill || !percent || !status) return;
+        
+            var currentProgress = 0;
+            var targetProgress = 15; // Initial parse baseline
+        
+            var stages = [
+                { progress: 30, text: "PARSING ASSETS" },
+                { progress: 65, text: "ENGAGING CANVASES" },
+                { progress: 85, text: "STABILIZING ORBIT" },
+                { progress: 100, text: "WARP READY" }
+            ];
+        
+            // Smooth ticker advancing visual bar towards target
+            var ticker = setInterval(function () {
+                if (currentProgress < targetProgress) {
+                    currentProgress += Math.ceil((targetProgress - currentProgress) * 0.12);
+                    if (currentProgress > targetProgress) currentProgress = targetProgress;
+                    fill.style.width = currentProgress + "%";
+                    percent.textContent = currentProgress + "%";
+                }
+            }, 20);
+        
+            function updateTarget(val, msg) {
+                if (val > targetProgress) targetProgress = val;
+                if (msg) status.textContent = msg;
+            }
+        
+            // Stage 1: Document DOM fully interactive
+            document.addEventListener("DOMContentLoaded", function () {
+                updateTarget(stages[0].progress, stages[0].text);
+            });
+        
+            // Stage 2: Background blackhole video metadata ready
+            var bgVideo = document.querySelector(".inter");
+            if (bgVideo) {
+                if (bgVideo.readyState >= 1) {
+                    updateTarget(stages[1].progress, stages[1].text);
+                } else {
+                    bgVideo.addEventListener("loadedmetadata", function () {
+                        updateTarget(stages[1].progress, stages[1].text);
+                    }, { once: true });
+                }
+            }
+        
+            // Stage 3 & Complete: Window load triggers when all scripts & fonts settle
+            window.addEventListener("load", function () {
+                updateTarget(stages[2].progress, stages[2].text);
+        
+                setTimeout(function () {
+                    updateTarget(100, stages[3].text);
+        
+                    setTimeout(function () {
+                        clearInterval(ticker);
+                        fill.style.width = "100%";
+                        percent.textContent = "100%";
+                        loader.classList.add("loaded");
+        
+                        // Remove from DOM to keep canvas performance at peak 60 FPS
+                        setTimeout(function () {
+                            loader.remove();
+                        }, 750);
+                    }, 300);
+                }, 200);
+            });
+        
+            // Safety fallback: prevents preloader getting stuck if an asset stalls
+            setTimeout(function () {
+                if (!loader.classList.contains("loaded")) {
+                    updateTarget(100, "INITIALIZING");
+                    setTimeout(function () {
+                        clearInterval(ticker);
+                        loader.classList.add("loaded");
+                        setTimeout(function () { loader.remove(); }, 750);
+                    }, 200);
+                }
+            }, 4500);
+        })();
 
         //////////////// Music toggle ////////////////////////
         var myAudio = document.getElementById("myAudio");
