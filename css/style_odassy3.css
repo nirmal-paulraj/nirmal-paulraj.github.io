@@ -411,14 +411,14 @@ section .title::after {
 
 .navbar .logo a {
     color: #fff;
-    font-size: 33px;
+    font-size: 29px;
     font-weight: 600;
 }
 
 .navbar .logo a span {
     color: var(--purple);
     transition: all 0.3s ease;
-    font-size: 33px;
+    font-size: 29px;
 }
 
 .navbar.sticky .logo a span {
